@@ -1,0 +1,2 @@
+-r requirements/testing.txt
+-r requirements/packaging.txt
