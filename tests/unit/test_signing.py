@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 from django.contrib.auth import get_user_model
 from django.core import signing
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from drf_signed_auth import settings
 from drf_signed_auth.signing import UserSigner
 from model_mommy import mommy
@@ -109,6 +109,10 @@ class UnsignTest(TestCase):
     @patch('django.core.signing.loads')
     @patch('django.core.signing.TimestampSigner.unsign')
     def test_django_signers_called(self, unsign_mock, loads_mock):
+        """
+        Asserts that the method calls Django's signers using
+        the SIGNED_URL_TTL for the expiry.
+        """
         user = mommy.make(get_user_model())
         signature = UserSigner().sign(user)
         loads_mock.return_value = {
@@ -119,5 +123,15 @@ class UnsignTest(TestCase):
 
         unsign_mock.assert_called_once_with(signature, settings.SIGNED_URL_TTL)
 
-    def test_custom(self):
+    def test_signing_with_custom_user_model(self):
+        """
+        Given a custom user model, the signature should sign
+        and unsign the user object correctly
+        """
         user = mommy.make('unit.CustomUser')
+
+        with override_settings(AUTH_USER_MODEL='unit.CustomUser'):
+            signature = UserSigner().sign(user)
+            result = self.sut(signature)
+
+        self.assertEqual(user, result)
