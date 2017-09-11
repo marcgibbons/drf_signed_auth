@@ -3,6 +3,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'tests',
+    'tests.unit'
 ]
 ROOT_URLCONF = []
 DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3'}}
