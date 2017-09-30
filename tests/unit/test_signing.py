@@ -1,9 +1,8 @@
-from unittest.mock import MagicMock, patch
-
 from django.contrib.auth import get_user_model
 from django.core import signing
 from django.test import TestCase, override_settings
 from drf_signed_auth import settings
+from drf_signed_auth.compat import mock
 from drf_signed_auth.signing import UserSigner
 from model_mommy import mommy
 
@@ -15,28 +14,28 @@ class SignTest(TestCase):
     def setUp(self):
         self.sut = UserSigner().sign
 
-    @patch('django.core.signing.dumps')
-    def test_dumps_user_pk_and_user_name(self, mock):
+    @mock.patch('django.core.signing.dumps')
+    def test_dumps_user_pk_and_user_name(self, dumps_mock):
         """
         Asserts that the signature is created using the user's
         primary key and username.
         """
-        user = MagicMock()
+        user = mock.MagicMock()
         self.sut(user)
 
-        mock.assert_called_once_with({
+        dumps_mock.assert_called_once_with({
             'user_id': user.pk,
             'username': user.get_username()
         })
 
-    @patch('django.core.signing.dumps')
-    @patch('django.core.signing.TimestampSigner.sign')
+    @mock.patch('django.core.signing.dumps')
+    @mock.patch('django.core.signing.TimestampSigner.sign')
     def test_signs_result_of_dump(self, sign_mock, dumps_mock):
         """
         Asserts that the django TimestampSigner sign method
         is called using the dumped user data and returned.
         """
-        user = MagicMock()
+        user = mock.MagicMock()
         result = self.sut(user)
         sign_mock.assert_called_once_with(dumps_mock.return_value)
 
@@ -106,8 +105,8 @@ class UnsignTest(TestCase):
 
         self.assertEqual(user, result)
 
-    @patch('django.core.signing.loads')
-    @patch('django.core.signing.TimestampSigner.unsign')
+    @mock.patch('django.core.signing.loads')
+    @mock.patch('django.core.signing.TimestampSigner.unsign')
     def test_django_signers_called(self, unsign_mock, loads_mock):
         """
         Asserts that the method calls Django's signers using

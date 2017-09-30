@@ -1,10 +1,10 @@
-from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.core import signing
 from django.test import TestCase
 from drf_signed_auth.authentication import SignedURLAuthentication
 from drf_signed_auth import settings
+from drf_signed_auth.compat import mock
 from model_mommy import mommy
 from rest_framework import exceptions
 from rest_framework.request import Request
@@ -26,7 +26,7 @@ class AuthenticateTest(TestCase):
         request = Request(self.factory.get('/fizz'))
         self.assertIsNone(self.sut(request))
 
-    @patch('drf_signed_auth.signing.UserSigner.unsign')
+    @mock.patch('drf_signed_auth.signing.UserSigner.unsign')
     def test_signature_unsiged_using_user_signer(self, unsign_mock):
         """
         Given that a signature is provided, the UserSigner
@@ -44,7 +44,7 @@ class AuthenticateTest(TestCase):
 
         self.assertEqual(expected, result)
 
-    @patch('drf_signed_auth.signing.UserSigner.unsign')
+    @mock.patch('drf_signed_auth.signing.UserSigner.unsign')
     def test_inactive_user(self, unsign_mock):
         """
         Given that the unsigned user is inactive,
@@ -62,7 +62,7 @@ class AuthenticateTest(TestCase):
 
         self.assertEqual('User inactive or deleted.', str(cm.exception))
 
-    @patch('drf_signed_auth.signing.UserSigner.unsign')
+    @mock.patch('drf_signed_auth.signing.UserSigner.unsign')
     def test_expired_url(self, unsign_mock):
         """
         Given that the signature has expired, an AuthenticationFailed
@@ -77,7 +77,7 @@ class AuthenticateTest(TestCase):
 
         self.assertEqual('This URL has expired.', str(cm.exception))
 
-    @patch('drf_signed_auth.signing.UserSigner.unsign')
+    @mock.patch('drf_signed_auth.signing.UserSigner.unsign')
     def test_bad_signature(self, unsign_mock):
         """
         Given that the signature was malformed, an AuthenticationFailed

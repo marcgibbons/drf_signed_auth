@@ -1,7 +1,6 @@
-from unittest.mock import patch
-
 from django.contrib.auth import get_user_model
 from drf_signed_auth import settings, views
+from drf_signed_auth.compat import mock
 from model_mommy import mommy
 from rest_framework.test import APIRequestFactory, APITestCase
 
@@ -14,7 +13,7 @@ class GetSignedUrlTest(APITestCase):
 
         self.sut = views.SignUrlView(request=self.request).get_signed_url
 
-    @patch('drf_signed_auth.signing.UserSigner.sign')
+    @mock.patch('drf_signed_auth.signing.UserSigner.sign')
     def test_fixx(self, sign_mock):
         sign_mock.return_value = 'the-returned-signature'
         url = '/my-protected=path?param1=fizz&param2=buzz'

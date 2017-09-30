@@ -1,12 +1,11 @@
-from unittest.mock import patch
 import uuid
 
 from django.contrib.auth import get_user_model
-from django.urls import reverse
+from drf_signed_auth.compat import mock
+from drf_signed_auth.compat import reverse
 from drf_signed_auth.views import SignUrlView
 from model_mommy import mommy
 from rest_framework.test import APITestCase
-
 
 
 class SignUrlViewTest(APITestCase):
@@ -22,9 +21,9 @@ class SignUrlViewTest(APITestCase):
         response = self.client.post(self.url)
         self.assertEqual(400, response.status_code)
 
-        self.assertEqual(['`url` must be provided'], response.json())
+        self.assertEqual(['`url` must be provided'], response.data)
 
-    @patch.object(SignUrlView, 'get_signed_url')
+    @mock.patch.object(SignUrlView, 'get_signed_url')
     def test_when_url_is_present(self, sign_mock):
         """
         Given that the `url` has been provided, the response
@@ -83,5 +82,5 @@ class AuthWorklfowTest(APITestCase):
                 'username': user.username,
                 'full_name': user.get_full_name()
             },
-            response.json()
+            response.data
         )
