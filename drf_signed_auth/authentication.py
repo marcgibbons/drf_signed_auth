@@ -5,7 +5,6 @@ to authenticate signed URL requests.
 from django.core import signing
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import authentication, exceptions
-from rest_framework.test import APIRequestFactory
 
 from . import settings
 from .signing import UserSigner

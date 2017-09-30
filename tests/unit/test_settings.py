@@ -6,6 +6,7 @@ import importlib
 
 from django.test import TestCase, override_settings
 from drf_signed_auth import settings
+from rest_framework import permissions
 
 
 class SettingsTest(TestCase):
@@ -30,3 +31,13 @@ class SettingsTest(TestCase):
         with override_settings(SIGNED_URL_QUERY_PARAM=expected):
             importlib.reload(settings)
             self.assertEqual(expected, settings.SIGNED_URL_QUERY_PARAM)
+
+    def test_default_permission_classes(self):
+        expected = [permissions.IsAuthenticated]
+        self.assertEqual(expected, settings.SIGNED_URL_PERMISSION_CLASSES)
+
+    def test_permission_classes_from_django_settings(self):
+        expected = ['some', 'other', 'classes']
+        with override_settings(SIGNED_URL_PERMISSION_CLASSES=expected):
+            importlib.reload(settings)
+            self.assertEqual(expected, settings.SIGNED_URL_PERMISSION_CLASSES)

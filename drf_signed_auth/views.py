@@ -12,6 +12,7 @@ class SignUrlView(views.APIView):
     url -- URL to be wrapped
     """
     param = settings.SIGNED_URL_QUERY_PARAM
+    permission_classes = settings.SIGNED_URL_PERMISSION_CLASSES
 
     def post(self, request):
         url = request.data.get('url')
