@@ -59,7 +59,7 @@ urlpatterns = [
 
 Use the authentication backend on the view you wish to expose.
 
-```
+```python
 # views.py
 from drf_signed_auth.authentication import SignedURLAuthentication
 from rest_framework.permissions import IsAuthenticated
