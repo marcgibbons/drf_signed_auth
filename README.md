@@ -4,6 +4,7 @@ resources.
 
 [![Build Status](https://travis-ci.org/marcgibbons/drf_signed_auth.png?branch=master)](https://travis-ci.org/marcgibbons/drf_signed_auth)
 [![Code Coverage](https://codecov.io/gh/marcgibbons/drf_signed_auth/branch/master/graph/badge.svg)](https://codecov.io/gh/marcgibbons/drf_signed_auth)
+[![PyPI Version](https://img.shields.io/pypi/v/drf-signed-auth.svg)](https://pypi.python.org/pypi/drf-signed-auth/0.1.1)
 
 
 ## Why?
