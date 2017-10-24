@@ -74,14 +74,14 @@ if sys.argv[-1] == 'publish':
     print("  git push --tags")
     shutil.rmtree('dist')
     shutil.rmtree('build')
-    shutil.rmtree('djangorestframework.egg-info')
+    shutil.rmtree('drf_signed_auth.egg-info')
     sys.exit()
 
 
 setup(
     name='drf_signed_auth',
     version=version,
-    url='',  #TODO
+    url='https://github.com/marcgibbons/drf_signed_auth',
     license='BSD',
     description='Sign and authenticate signed URLs for one-time use',
     long_description=read_md('README.md'),
