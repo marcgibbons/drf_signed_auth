@@ -2,3 +2,4 @@ mock==2.0.0  # Backport for Python2
 model_mommy==1.4.0
 pep8==1.7.0
 pylint==1.7.2
+coverage==4.4.1

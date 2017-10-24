@@ -2,6 +2,9 @@
 A stateless authentication backend intended to temporarily expose protected
 resources.
 
+[![Build Status](https://travis-ci.org/marcgibbons/drf_signed_auth.png?branch=master)](https://travis-ci.org/marcgibbons/drf_signed_auth)
+[![Code Coverage](https://codecov.io/gh/marcgibbons/drf_signed_auth/branch/master/graph/badge.svg)](https://codecov.io/gh/marcgibbons/drf_signed_auth)
+
 
 ## Why?
 
@@ -20,10 +23,17 @@ signature. It provides a view used to produce the signature and a DRF
 authentication backend.
 
 
+## Is this secure?
+Use this backend with caution and sparingly. Anyone with a copy of the signed
+URL will be able to access a protected resource, so keep the expiry time
+short (see settings), and ensure that the Django `SECRET_KEY` setting is kept
+private.
+
+
 ## Requirements
 - Python 2.7 / 3.6
 - Django 1.8, 1.9, 1.10, 1.11
-- Django REST Framework 3.6
+- Django REST Framework 3.6, 3.7
 
 
 ## Installation
