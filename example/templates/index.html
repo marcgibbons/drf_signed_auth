@@ -1,8 +1,73 @@
+{% load static %}
 <html>
   <head>
     <title>Example direct download</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.min.js" %}"></script>
   </head>
   <body>
+  <div class="container">
+    <h1>Countries of the World</h1>
+    <p>Data obtained from <a href="http://www.geonames.org" rel="external">GeoNames.org</a></p>
+
+    <table class="table" id="countryTable">
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Continent</th>
+          <th>Capital</th>
+          <th>Area (km2)</th>
+          <th>Population</th>
+        </tr>
+      </thead>
+      <tbody id="table-data">
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="align-center">
+            <ul class="pagination">
+              <li class="page-item" id="next"><a class="page-link" href="#">Prev</a></li>
+              <li class="page-item" id="prev"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var apiUrl = '{% url "country-list" %}';
+      var fields = [
+        'country_name',
+        'continent_name',
+        'capital',
+        'area_in_sq_km',
+        'population'
+      ];
+
+      // Fetch data to load table
+      $.get(apiUrl).then(function (data) {
+        var $next = $('#next');
+        $next.toggleClass('disabled', !!data.next);
+        $next.data('url', data.next);
+
+        var $prev = $('#prev');
+        $prev.toggleClass('disabled', !!data.previous);
+        $prev.data('url', data.previous);
+
+        var els = $.map(data.results, function (obj) {
+          var tr = $('<tr>');
+          $.each(fields, function(idx, field) {
+            var td = $('<td>');
+            td.html(obj[field]);
+            $(tr).append(td);
+          });
+          return tr;
+        });
+        $('#table-data').html(els);
+      });
+    });
+
+  </script>
   </body>
 </html>
