@@ -3,13 +3,28 @@
   <head>
     <title>Example direct download</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.min.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      // Set auth token for all XHR requests
+      $.ajaxSetup({
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Token {{ token }}')
+        }
+      });
+      window.urls = {
+        countryList: '{% url "country-list" %}',
+        signer: '{% url "url-signer" %}'
+      };
+    </script>
   </head>
   <body>
   <div class="container">
     <h1>Countries of the World</h1>
-    <p>Data obtained from <a href="http://www.geonames.org" rel="external">GeoNames.org</a></p>
+    <p>Data obtained from <a href="http://www.geonames.org" rel="external" target="_new">GeoNames.org</a></p>
 
+    <div class="col text-right mb-4">
+      <a id="download-countries" class="btn btn-primary" href="#">Download as CSV</a>
+    </div>
     <table class="table" id="countryTable">
       <thead>
         <tr>
@@ -24,50 +39,29 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="5" class="align-center">
+          <td>
             <ul class="pagination">
-              <li class="page-item" id="next"><a class="page-link" href="#">Prev</a></li>
-              <li class="page-item" id="prev"><a class="page-link" href="#">Next</a></li>
+              <li class="page-item" id="prev"><a class="page-link" href="#">&lt;</a></li>
+              <li class="page-item" id="next"><a class="page-link" href="#">&gt;</a></li>
             </ul>
           </td>
         </tr>
       </tfoot>
     </table>
+    <hr>
+    <p>
+    This example app illustrates direct download functionality of a protected
+    API resource. By clicking the download button, a temporary URL is generated
+    which the browser then uses to access the resource.
+    </p>
+    <p>
+    An authentication token has been hardcoded for all XHR requests made on
+    on this page. If you try to access the
+    <a href="{% url "country-list" %}" target="_new">/countries</a> resource
+    directly, a 401 response should be returned.
+    </p>
   </div>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var apiUrl = '{% url "country-list" %}';
-      var fields = [
-        'country_name',
-        'continent_name',
-        'capital',
-        'area_in_sq_km',
-        'population'
-      ];
-
-      // Fetch data to load table
-      $.get(apiUrl).then(function (data) {
-        var $next = $('#next');
-        $next.toggleClass('disabled', !!data.next);
-        $next.data('url', data.next);
-
-        var $prev = $('#prev');
-        $prev.toggleClass('disabled', !!data.previous);
-        $prev.data('url', data.previous);
-
-        var els = $.map(data.results, function (obj) {
-          var tr = $('<tr>');
-          $.each(fields, function(idx, field) {
-            var td = $('<td>');
-            td.html(obj[field]);
-            $(tr).append(td);
-          });
-          return tr;
-        });
-        $('#table-data').html(els);
-      });
-    });
-
-  </script>
+  <script type="text/javascript" src="{% static "js/countries.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/download-countries.js" %}"></script>
   </body>
 </html>
