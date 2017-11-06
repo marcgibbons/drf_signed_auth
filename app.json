@@ -1,0 +1,6 @@
+{
+  "name": "Example app using DRF Signed Auth",
+  "description": "An example application demonstrating the direct CSV download of a protected endpoint",
+  "repository": "https://github.com/marcgibbons/drf_signed_auth",
+  "keywords": ["django", "auth", "rest", "framework"],
+}
