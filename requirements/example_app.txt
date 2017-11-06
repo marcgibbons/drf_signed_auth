@@ -1,4 +1,6 @@
--e ../
+-e .
 Django==1.11.6
 djangorestframework==3.7.1
 djangorestframework-csv==2.0.0
+whitenoise==3.3.1
+gunicorn==19.7.1
