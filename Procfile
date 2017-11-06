@@ -1,2 +1,2 @@
-web: gunicorn example.wsgi
-release: python manage.py migrate --noinput && python manage.py loaddata countries user
+web: cd example && gunicorn example.wsgi
+release: cd example && python manage.py migrate --noinput && python manage.py loaddata countries user
