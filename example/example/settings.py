@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+from distutils.util import strtobool
 import os
 import dj_database_url
 
@@ -24,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kn^t*y!9lz5@p%3bcqeq8k+9irtme4hh9%!kzr&r9wual1o4%s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = strtobool(os.environ.get('DEBUG', '1'))
 
 ALLOWED_HOSTS = ['*']
 
