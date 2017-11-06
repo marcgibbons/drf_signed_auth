@@ -1,2 +1,1 @@
--r requirements/testing.txt
--r requirements/packaging.txt
+-r requirements/example_app.txt
