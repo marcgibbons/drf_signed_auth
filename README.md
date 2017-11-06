@@ -7,6 +7,12 @@ resources.
 [![PyPI Version](https://img.shields.io/pypi/v/drf-signed-auth.svg)](https://pypi.python.org/pypi/drf-signed-auth/0.1.1)
 
 
+## Example app
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+Deploy your own, or try out  https://drf-signed-auth.herokuapp.com
+
+
 ## Why?
 
 The motivation for this package comes from a frequent project requirement to
